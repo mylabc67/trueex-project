@@ -11,7 +11,8 @@
     "build": "better-npm-run build",
     "build-backend": "webpack --config webpack/server.config.js",
     "postinstall": "npm run build",
-    "lint": "eslint -c .eslintrc src api"
+    "lint": "eslint -c .eslintrc src api",
+    "test": "jest"
   },
   "betterScripts": {
     "start-prod": {
@@ -120,6 +121,7 @@
     "extract-text-webpack-plugin": "^0.9.1",
     "font-awesome": "^4.4.0",
     "font-awesome-webpack": "0.0.4",
+    "jest": "^23.1.0",
     "json-loader": "^0.5.4",
     "karma": "^0.13.10",
     "karma-cli": "^0.1.1",
