@@ -18,7 +18,8 @@ module.exports = {
   devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
   entry: {
-    'main': ['./src/client.js']
+    'main': ['./src/client.js'],
+    style: ['./src/style/main.less']
   },
   output: {
     path: assetsPath,
@@ -30,6 +31,7 @@ module.exports = {
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel']},
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.css$/, loader: ExtractTextPlugin.extract('style', 'css') },
+      { test: /\.less$/, loader: ExtractTextPlugin.extract('style', 'css', 'less') },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
