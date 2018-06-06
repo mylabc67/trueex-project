@@ -21,8 +21,18 @@ const dest = document.getElementById('content');
 const store = createStore(_browserHistory, client, window.__data);
 const history = syncHistoryWithStore(_browserHistory, store);
 
+// configurations for the websocket
+const webSocketConfig = {
+  reconnection: true, // allow reconncetion
+  reconnectionAttempts: 10, // maximum reconnect times
+  reconnectionDelay: 1000, // each reconnect intervals
+};
+
 function initSocket() {
-  let socket = io('', {path: '/ws'});
+  let socket = io('', {
+    path: '/ws',
+    ...webSocketConfig,
+  });
   socket.on('snapshot', (data) => {
     console.log(data);
     socket.emit('my other event', { my: 'data from client' });
@@ -30,8 +40,16 @@ function initSocket() {
   socket.on('update', (data) => {
     console.log(data);
   });
-  socket.on('disconnect',() => {
-    socket = undefined;
+  socket.on('disconnect', () => {
+    console.log('trying to reconnect'); // once detected the disconnection, do not close socket immediately
+    // socket = undefined;
+  });
+  socket.on('reconnect_attempt', (attemptNumber) => {
+    console.log(`reconnecting attempted ${attemptNumber} time${attemptNumber > 1 ? 's' : ''}`); // record the attepmt times
+  });
+  socket.on('reconnect_failed', () => {
+    console.log('exceed maximum attempt times and close socket');
+    socket = undefined; // only after reach the apptempt times, close the socket.
   });
   return socket;
 }
